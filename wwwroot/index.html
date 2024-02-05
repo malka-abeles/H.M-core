@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Pizza CRUD</title>
+    <title>Task CRUD</title>
     <link rel="stylesheet" href="css/site.css" />
 </head>
 
@@ -11,7 +11,7 @@
     <h1>Tasks CRUD</h1>
     <h3>Add</h3>
     <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
-        <input type="text" id="add-name" placeholder="New pizza">
+        <input type="text" id="add-name" placeholder="New Task">
         <input type="submit" value="Add">
     </form>
 
@@ -35,7 +35,7 @@
             <th></th>
             <th></th>
         </tr>
-        <tbody id="pizzas"></tbody>
+        <tbody id="Tasks"></tbody>
     </table>
 
     <script src="js/site.js" asp-append-version="true"></script>

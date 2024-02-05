@@ -45,9 +45,9 @@ namespace TaskList.Controllers
     }
 
     [HttpPut("{id}")]
-    public ActionResult Put(int id,Task newPizza)
+    public ActionResult Put(int id,Task newTask)
     {
-        var result = TaskListService.Update(id, newPizza);
+        var result = TaskListService.Update(id, newTask);
         if (result==null)
         {
             return BadRequest();

@@ -1,11 +1,11 @@
-const uri = '/Task';
-let pizzas = [];
+const uri = '/TaskList';
+let Tasks = [];
 
 function getItems() {
     fetch(uri)
         .then(response => response.json())
         .then(data => _displayItems(data))
-        .catch(console.log("error"));
+        .catch(error => console.error('Unable to get items.', error));
 }
 
 function addItem() {
@@ -41,7 +41,7 @@ function deleteItem(id) {
 }
 
 function displayEditForm(id) {
-    const item = pizzas.find(item => item.id === id);
+    const item = Tasks.find(item => item.id === id);
 
     document.getElementById('edit-name').value = item.name;
     document.getElementById('edit-id').value = item.id;
@@ -78,13 +78,13 @@ function closeInput() {
 }
 
 function _displayCount(itemCount) {
-    const name = (itemCount === 1) ? 'pizza' : 'pizza kinds';
+    const name = (itemCount === 1) ? 'task' : 'task kinds';
 
     document.getElementById('counter').innerText = `${itemCount} ${name}`;
 }
 
 function _displayItems(data) {
-    const tBody = document.getElementById('pizzas');
+    const tBody = document.getElementById('Tasks');
     tBody.innerHTML = '';
 
     _displayCount(data.length);
@@ -121,5 +121,5 @@ function _displayItems(data) {
         td4.appendChild(deleteButton);
     });
 
-    pizzas = data;
+    Tasks = data;
 }
