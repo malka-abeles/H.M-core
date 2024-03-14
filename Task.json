@@ -1,1 +1,1 @@
-[{"id":6,"name":"go to sleep","Done":false},{"id":7,"name":"new Task","Done":true},{"id":8,"name":"string","Done":false},{"id":9,"name":"nowhgtfr","Done":false},{"id":10,"name":"hnbugy","Done":false}]
+[{"id":6,"name":"go to sleep","isDone":false},{"id":7,"name":"new Task","isDone":true},{"id":8,"name":"string","isDone":true},{"id":9,"name":"nowhgtfr","isDone":false},{"id":10,"name":"","isDone":false}]

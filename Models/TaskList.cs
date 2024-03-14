@@ -8,6 +8,6 @@ namespace Tasklist.Modelssss
 
         public String name { get; set; }
 
-        public bool Done { get; set; }
+        public bool isDone { get; set; }
     }
 }

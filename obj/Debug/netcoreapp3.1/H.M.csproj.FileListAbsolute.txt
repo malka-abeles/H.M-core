@@ -26,3 +26,12 @@ C:\Users\user1\Desktop\h.m\obj\Debug\netcoreapp3.1\H.M.csproj.CopyComplete
 C:\Users\user1\Desktop\h.m\obj\Debug\netcoreapp3.1\H.M.dll
 C:\Users\user1\Desktop\h.m\obj\Debug\netcoreapp3.1\H.M.pdb
 C:\Users\user1\Desktop\h.m\obj\Debug\netcoreapp3.1\H.M.genruntimeconfig.cache
+C:\Users\user1\Desktop\h.m\bin\Debug\netcoreapp3.1\data\User.json
+C:\Users\user1\Desktop\h.m\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\user1\Desktop\h.m\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\user1\Desktop\h.m\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\user1\Desktop\h.m\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\Users\user1\Desktop\h.m\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\user1\Desktop\h.m\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\user1\Desktop\h.m\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\user1\Desktop\h.m\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll

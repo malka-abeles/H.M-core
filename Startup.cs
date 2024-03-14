@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using TaskList.Services;
 using Middleware;
+using myTasks.Services;
 
 namespace H.M
 {
@@ -29,6 +30,10 @@ namespace H.M
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTask();
+
+            services.AddUser();
+
+            services.AddToken();
 
             services.AddControllers();
 

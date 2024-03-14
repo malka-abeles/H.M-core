@@ -10,12 +10,12 @@ using System.Text.Json;
 
 namespace TaskList.Services
 {
-     public class TaskList : ITaskListService
+     public class TasksService : ITaskListService
     {
         private List<Task> MyTaskList;
 
         private string fileName = "Task.json";
-        public TaskList(/*IWebHostEnvinronment webHost*/)
+        public TasksService(/*IWebHostEnvinronment webHost*/)
         {
             this.fileName = Path.Combine(/*webHost.ContentRootPath,*/  "Task.json");
 
@@ -71,13 +71,15 @@ namespace TaskList.Services
             MyTaskList.RemoveAt(index);
             saveToFile();
         }
+        public int Count => MyTaskList.Count();
     }
 
     public static class TaskUtils
     {
         public static void AddTask(this IServiceCollection services)
         {
-            services.AddSingleton<ITaskListService, TaskList>();
+            services.AddSingleton<ITaskListService, TasksService>();
         }
     }
+
 }

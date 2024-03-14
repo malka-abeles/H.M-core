@@ -12,7 +12,6 @@ namespace  TaskList.Interface
 
         public Task Add(Task c);
 
-
         public Task Update (int id,Task c);
 
         public void Delete (int id);
