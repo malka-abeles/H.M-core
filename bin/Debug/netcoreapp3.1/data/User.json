@@ -1,1 +1,20 @@
-[{"Id":2,"Name":"levi","Password":"l12345","UserType":0},{"Id":3,"Name":"rut","Password":"cvb65","UserType":0},{"Id":4,"Name":"yael","Password":"yael3","UserType":0}]
+[
+    {
+        "Id": 2,
+        "Name": "levi",
+        "Password": "l12345",
+        "UserType": 0
+    },
+    {
+        "Id": 4,
+        "Name": "yael",
+        "Password": "yael3",
+        "UserType": 1
+    },
+    {
+        "Id": 5,
+        "Name": "string",
+        "Password": "string",
+        "UserType": 0
+    }
+]

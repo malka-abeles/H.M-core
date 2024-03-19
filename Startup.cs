@@ -1,27 +1,28 @@
-// using System;
-// using System.Collections.Generic;
-// using System.Linq;
-// using System.Threading.Tasks;
+using System;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-// using Microsoft.AspNetCore.HttpsPolicy;
-// using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-// using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using TaskList.Services;
 using Middleware;
 using myTasks.Services;
 
+
 namespace H.M
 {
     public class Startup
     {
+        private TaskTokenService MyTaskTokenService;
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            MyTaskTokenService = new TaskTokenService();
         }
 
         public IConfiguration Configuration { get; }
@@ -29,6 +30,24 @@ namespace H.M
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.TokenValidationParameters = MyTaskTokenService.GetTokenValidationParameters();
+            });
+
+            services.AddAuthorization(cfg =>
+            {
+                cfg.AddPolicy("admin", policy => policy.RequireClaim("type", "admin"));
+                cfg.AddPolicy("user", policy => policy.RequireClaim("type", "user"));
+            });
+        
             services.AddTask();
 
             services.AddUser();
@@ -39,7 +58,25 @@ namespace H.M
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API Name", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "myTask", Version = "v1" });
+
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                //auth4
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                { new OpenApiSecurityScheme
+                        {
+                         Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer"}
+                        },
+                    new string[] {}
+                }
+                });
             });
 
         }
@@ -50,11 +87,18 @@ namespace H.M
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Task v1");
+                });
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
@@ -63,13 +107,6 @@ namespace H.M
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API Name v1");
             });
 
             app.UseDefaultFiles();

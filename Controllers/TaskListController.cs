@@ -7,6 +7,9 @@ using Microsoft.Extensions.Logging;
 using TaskList.Interface;
 using Tasklist.Modelssss;
 using Task = Tasklist.Modelssss.Task;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace TaskList.Controllers
 {
@@ -15,52 +18,74 @@ namespace TaskList.Controllers
     public class TaskListController : ControllerBase
     {
         ITaskListService TaskListService;
-    public TaskListController(ITaskListService TaskListService)
-    {
-        this.TaskListService = TaskListService;
-    }
 
-    [HttpGet]
-    public ActionResult<List<Task>> Get()
-    {
-        return TaskListService.GetAll();
-    }
-
-    [HttpGet("{id}")]
-    public ActionResult<Task> Get(int id)
-    {
-        var task = TaskListService.GetById(id);
-        if (task == null)
-            return NotFound();
-        return task;
-    }
-
-    [HttpPost]
-    public ActionResult Post(Task newTask)
-    {
-        var newId = TaskListService.Add(newTask);
-
-        return CreatedAtAction("Post", 
-            new {id = newId}, TaskListService.GetById(newId.id));
-    }
-
-    [HttpPut("{id}")]
-    public ActionResult Put(int id,Task newTask)
-    {
-        var result = TaskListService.Update(id, newTask);
-        if (result==null)
+        public TaskListController(ITaskListService TaskListService)
         {
-            return BadRequest();
+            this.TaskListService = TaskListService;
         }
-        return NoContent();
-    }
 
-    [HttpDelete("{id}")]
-    public ActionResult delete (int id)
-    {
-        TaskListService.Delete(id);
-        return NoContent();
-    } 
+        [HttpGet]
+        [Authorize(Policy = "user")]
+        public ActionResult<List<Task>> Get()
+        {
+            var newlist = new List<Task>(TaskListService.GetAll(int.Parse(User.FindFirst("id")?.Value)));
+            return newlist;
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(Policy = "user")]
+        public ActionResult<Task> Get(int id)
+        {
+            var task = TaskListService.GetById(id);
+            if (task == null)
+                return NotFound();
+            if (!chekAuthorization(id))
+                return Unauthorized();
+            return task;
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "user")]
+        public ActionResult Post(Task newTask)
+        {
+            var newId = TaskListService.Add(newTask);
+            newTask.ownerId = int.Parse(User.FindFirst("Id").Value);
+            TaskListService.Add(newTask);
+            return CreatedAtAction(nameof(Post), new { id = newId }, newTask);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Policy = "user")]
+        public ActionResult Put(int id, Task newTask)
+        {
+
+            newTask.ownerId = int.Parse(User.FindFirst("Id").Value);
+            var result = TaskListService.Update(id, newTask);
+            if (result == null)
+            {
+                return BadRequest();
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Policy = "user")]
+        public ActionResult delete(int id)
+        {
+            var task = TaskListService.GetById(id);
+            if (task == null)
+                return NotFound();
+            if (!chekAuthorization(id))
+                return Unauthorized();
+            TaskListService.Delete(id);
+            return NoContent();
+        }
+
+
+        private bool chekAuthorization(int taskId)
+        {
+            return TaskListService.GetById(taskId).ownerId == int.Parse(User.FindFirst("id").Value);
+        }
 
     }
 }

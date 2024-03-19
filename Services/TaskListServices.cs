@@ -6,18 +6,19 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace TaskList.Services
 {
-     public class TasksService : ITaskListService
+    public class TasksService : ITaskListService
     {
         private List<Task> MyTaskList;
 
-        private string fileName = "Task.json";
-        public TasksService(/*IWebHostEnvinronment webHost*/)
+        private string fileName = "./data/Task.json";
+        public TasksService()
         {
-            this.fileName = Path.Combine(/*webHost.ContentRootPath,*/  "Task.json");
+            this.fileName = Path.Combine("./data/Task.json");
 
             using (var jsonFile = File.OpenText(fileName))
             {
@@ -25,7 +26,8 @@ namespace TaskList.Services
                 new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
-                });
+                }
+                );
             }
         }
 
@@ -34,44 +36,52 @@ namespace TaskList.Services
             File.WriteAllText(fileName, JsonSerializer.Serialize(MyTaskList));
         }
 
-        public List<Task> GetAll()=>MyTaskList;
+        public List<Task> GetAll(int userId) => new List<Task>(MyTaskList.Where(i => i.ownerId == userId));
 
-        public Task GetById(int id) 
+        public Task GetById(int id)
         {
-        return MyTaskList.FirstOrDefault(p => p.id == id);
+            return MyTaskList.FirstOrDefault(t => t.id == id);
         }
 
         public Task Add(Task c)
         {
-            if (MyTaskList.Count==0) c.id=1;
-            else c.id = MyTaskList.Max(p => p.id)+1;
+            if (MyTaskList.Count == 0) c.id = 1;
+            else c.id = MyTaskList.Max(p => p.id) + 1;
             MyTaskList.Add(c);
             saveToFile();
             return c;
         }
 
 
-        public Task Update (int id,Task c)
+        public Task Update(int id, Task c)
         {
-            if(id != c.id) return null;
+            if (id != c.id) return null;
             var newchore = GetById(id);
-            if(newchore == null) return null;
+            if (newchore == null) return null;
             int index = MyTaskList.IndexOf(newchore);
-            MyTaskList[index]=c;
+            MyTaskList[index] = c;
             saveToFile();
             return c;
         }
 
 
-        public void Delete (int id)
+        public void Delete(int id)
         {
-             var newchore = GetById(id);
-            if(newchore == null) return;
+            var newchore = GetById(id);
+            if (newchore == null) return;
             int index = MyTaskList.IndexOf(newchore);
             MyTaskList.RemoveAt(index);
             saveToFile();
         }
         public int Count => MyTaskList.Count();
+
+        public void DeleteByUserId(int UserId)
+        {
+            MyTaskList = new List<Task>(MyTaskList.Where(i => i.ownerId != UserId));
+            saveToFile();
+        }
+
+        
     }
 
     public static class TaskUtils

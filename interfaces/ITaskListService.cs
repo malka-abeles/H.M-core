@@ -6,7 +6,7 @@ namespace  TaskList.Interface
 {
     public interface ITaskListService
     {
-        List <Task> GetAll();
+        List <Task> GetAll(int userId);
 
         public Task GetById(int id);
 
@@ -15,6 +15,8 @@ namespace  TaskList.Interface
         public Task Update (int id,Task c);
 
         public void Delete (int id);
+
+        public void DeleteByUserId (int UserId);
     }
     
 }
