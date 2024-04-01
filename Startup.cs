@@ -68,7 +68,6 @@ namespace H.M
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey
                 });
-                //auth4
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement {
                 { new OpenApiSecurityScheme
                         {
@@ -94,7 +93,14 @@ namespace H.M
                 });
             }
 
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseHttpsRedirection();
+
+            app.UseMyLogMiddleware();
+
 
             app.UseRouting();
 
@@ -102,15 +108,12 @@ namespace H.M
 
             app.UseAuthorization();
 
-            app.UseMyLogMiddleware();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
         }
     }
 }

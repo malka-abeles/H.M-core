@@ -1,47 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Task CRUD</title>
-    <link rel="stylesheet" href="css/site.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/login.css">
 </head>
 
 <body>
-    <h1>Tasks CRUD</h1>
-    <h3>Add</h3>
-    <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
-        <input type="text" id="add-name" placeholder="New Task">
-        <input type="submit" value="Add">
+
+    <form action="" name="sign up" id="formSignUp">
+        <h1>sign up</h1> <br>
+        <input type="text" id="name" placeholder="name"> <br>
+        <input type="text" id="password" placeholder="password"> <br> <br>
+        <button type="submit" id="submit">submit</button>
     </form>
 
-    <div id="editForm">
-        <h3>Edit</h3>
-        <form action="javascript:void(0);" onsubmit="updateItem()">
-            <input type="hidden" id="edit-id">
-            <input type="checkbox" id="edit-isDone">
-            <input type="text" id="edit-name">
-            <input type="submit" value="Save">
-            <a onclick="closeInput()" aria-label="Close">&#10006;</a>
-        </form>
+
+    <!-- conent to postmen -->
+    <div class="postman-run-button" data-postman-action="collection/fork" data-postman-visibility="public"
+        data-postman-var-1="29792442-e409aac5-0127-481b-b8a2-3bf3c7949aa2"
+        data-postman-collection-url="entityId=29792442-e409aac5-0127-481b-b8a2-3bf3c7949aa2&entityType=collection&workspaceId=c6e4de30-a3b8-49ce-a960-9cd45bed6718">
     </div>
-
-    <p id="counter"></p>
-
-    <table>
-        <tr>
-            <th>Is done?</th>
-            <th>Name</th>
-            <th></th>
-            <th></th>
-        </tr>
-        <tbody id="Tasks"></tbody>
-    </table>
-
-    <script src="js/site.js" asp-append-version="true"></script>
     <script type="text/javascript">
-        getItems();
+        (function (p, o, s, t, m, a, n) {
+            !p[s] && (p[s] = function () { (p[t] || (p[t] = [])).push(arguments); });
+            !o.getElementById(s + t) && o.getElementsByTagName("head")[0].appendChild((
+                (n = o.createElement("script")),
+                (n.id = s + t), (n.async = 1), (n.src = m), n
+            ));
+        }(window, document, "_pm", "PostmanRunObject", "https://run.pstmn.io/button.js"));
     </script>
+
+    <script src="js/indexLogin.js"></script>
 </body>
 
 </html>

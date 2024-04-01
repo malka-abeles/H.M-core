@@ -45,6 +45,7 @@ public class UserService: IUserService
             newUser.Id = 1;
         else
             newUser.Id =  users.Max(t => t.Id) + 1;
+        newUser.UserType = myTasks.Models.UserType.USER;
         users.Add(newUser);
         saveToFile();
         return newUser.Id;

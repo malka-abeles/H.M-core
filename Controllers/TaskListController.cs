@@ -19,17 +19,23 @@ namespace TaskList.Controllers
     {
         ITaskListService TaskListService;
 
-        public TaskListController(ITaskListService TaskListService)
+        private int userId;
+        public TaskListController(ITaskListService TaskListService,IHttpContextAccessor httpContextAccessor)
         {
             this.TaskListService = TaskListService;
+            this.userId=int.Parse(httpContextAccessor.HttpContext?.User?.FindFirst("id")?.Value);
         }
 
         [HttpGet]
         [Authorize(Policy = "user")]
         public ActionResult<List<Task>> Get()
         {
-            var newlist = new List<Task>(TaskListService.GetAll(int.Parse(User.FindFirst("id")?.Value)));
-            return newlist;
+            // int id=int.Parse(User.FindFirst("id")?.Value);
+                        // System.Console.WriteLine(id);
+
+            return TaskListService.GetAll(this.userId);
+            // System.Console.WriteLine(newlist.Size());
+            // return newlist;
         }
 
         [HttpGet("{id}")]
@@ -49,8 +55,7 @@ namespace TaskList.Controllers
         public ActionResult Post(Task newTask)
         {
             var newId = TaskListService.Add(newTask);
-            newTask.ownerId = int.Parse(User.FindFirst("Id").Value);
-            TaskListService.Add(newTask);
+            newTask.ownerId = int.Parse(User.FindFirst("id").Value);
             return CreatedAtAction(nameof(Post), new { id = newId }, newTask);
         }
 
@@ -59,7 +64,7 @@ namespace TaskList.Controllers
         public ActionResult Put(int id, Task newTask)
         {
 
-            newTask.ownerId = int.Parse(User.FindFirst("Id").Value);
+            newTask.ownerId = int.Parse(User.FindFirst("id").Value);
             var result = TaskListService.Update(id, newTask);
             if (result == null)
             {

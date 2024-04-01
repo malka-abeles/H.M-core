@@ -1,0 +1,16 @@
+
+body{
+    display: flex;
+    justify-content: center;
+}
+
+#formSignUp{
+    border: 1px #000000 solid;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    height: 250px;
+    margin-top: 120px;
+}

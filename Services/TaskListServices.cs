@@ -36,7 +36,7 @@ namespace TaskList.Services
             File.WriteAllText(fileName, JsonSerializer.Serialize(MyTaskList));
         }
 
-        public List<Task> GetAll(int userId) => new List<Task>(MyTaskList.Where(i => i.ownerId == userId));
+        public List<Task> GetAll(int userId) => MyTaskList.Where(i => i.ownerId == userId).ToList();
 
         public Task GetById(int id)
         {

@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using TaskList.Interface;
+using System;
 
 
 
@@ -33,20 +34,24 @@ namespace mytasks.Controllers
         [HttpPost("/login")]
         public ActionResult<string> Login([FromBody] User user)
         {
-            var myUser = this.UserService.GetAll().FirstOrDefault(c => c.Id == user.Id);
+            var myUser = this.UserService.GetAll().FirstOrDefault(c =>c.Name==user.Name && c.Password == user.Password);
             if (myUser == null)
+            {
+                Console.WriteLine("myUser = null");
                 return Unauthorized();
+            }
 
             var claims = new List<Claim>
-        {
+            {
             new Claim("type", "user"),
-            new Claim("Id",user.Id.ToString()),
-        };
+            new Claim("id",myUser.Id.ToString()),
+            };
 
-            if (user.UserType == UserType.ADMIN)
+            if (myUser.UserType == UserType.ADMIN){
 
                 claims.Add(new Claim("type", "admin"));
-
+                System.Console.WriteLine("admin is login");
+            }
             var token = TokenService.GetToken(claims);
 
             return new OkObjectResult(TokenService.WriteToken(token));

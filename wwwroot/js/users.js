@@ -1,51 +1,64 @@
-const uri = '/TaskList';
-let Tasks = [];
+const uri = '/User';
+let Users = [];
+let token = localStorage.getItem("token");
 
-function getItems() {
-    fetch(uri)
+var myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer " + token);
+myHeaders.append("Content-Type", "application/json");
+
+const getItems = (token)=> {
+
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    fetch(uri,requestOptions)
         .then(response => response.json())
         .then(data => _displayItems(data))
         .catch(error => console.error('Unable to get items.', error));
 }
 
-function addItem() {
+const addItem=() =>{
     const addNameTextbox = document.getElementById('add-name');
+    const addPasswordTextbox = document.getElementById('add-password');
+
 
     const item = {
-        isDone: false,
-        name: addNameTextbox.value.trim()
+        name: addNameTextbox.value.trim(),
+        password: addPasswordTextbox.value.trim(),
     };
 
     fetch(uri, {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+            headers: myHeaders,
             body: JSON.stringify(item)
         })
         .then(response => response.json())
         .then(() => {
-            getItems();
+            getItems(token);
             addNameTextbox.value = '';
+            addPasswordTextbox.value = '';
         })
         .catch(error => console.error('Unable to add item.', error));
 }
 
 function deleteItem(id) {
     fetch(`${uri}/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: myHeaders,
         })
-        .then(() => getItems())
+        .then(() => getItems(token))
         .catch(error => console.error('Unable to delete item.', error));
 }
 
 function displayEditForm(id) {
-    const item = Tasks.find(item => item.id === id);
+    const item = Users.find(item => item.id === id);
 
     document.getElementById('edit-name').value = item.name;
     document.getElementById('edit-id').value = item.id;
-    document.getElementById('edit-isDone').checked = item.isDone;
+    document.getElementById('edit-isManeger').checked = item.isDone;
     document.getElementById('editForm').style.display = 'block';
 }
 
@@ -53,19 +66,16 @@ function updateItem() {
     const itemId = document.getElementById('edit-id').value;
     const item = {
         id: parseInt(itemId, 10),
-        isDone: document.getElementById('edit-isDone').checked,
+        isDone: document.getElementById('edit-isManeger').checked,
         name: document.getElementById('edit-name').value.trim()
     };
 
     fetch(`${uri}/${itemId}`, {
             method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+            headers: myHeaders,
             body: JSON.stringify(item)
         })
-        .then(() => getItems())
+        .then(() => getItems(token))
         .catch(error => console.error('Unable to update item.', error));
 
     closeInput();
@@ -78,13 +88,13 @@ function closeInput() {
 }
 
 function _displayCount(itemCount) {
-    const name = (itemCount === 1) ? 'task' : 'task kinds';
+    const name = (itemCount === 1) ? 'user' : 'user kinds';
 
     document.getElementById('counter').innerText = `${itemCount} ${name}`;
 }
 
 function _displayItems(data) {
-    const tBody = document.getElementById('Tasks');
+    const tBody = document.getElementById('Users');
     tBody.innerHTML = '';
 
     _displayCount(data.length);
@@ -95,7 +105,7 @@ function _displayItems(data) {
         let isDoneCheckbox = document.createElement('input');
         isDoneCheckbox.type = 'checkbox';
         isDoneCheckbox.disabled = true;
-        isDoneCheckbox.checked = item.isDone;
+        isDoneCheckbox.checked = !item.userType;
 
         let editButton = button.cloneNode(false);
         editButton.innerText = 'Edit';
@@ -114,12 +124,19 @@ function _displayItems(data) {
         let textNode = document.createTextNode(item.name);
         td2.appendChild(textNode);
 
-        let td3 = tr.insertCell(2);
+        let td5 = tr.insertCell(2);
+        let textNode1 = document.createTextNode(item.password);
+        td5.appendChild(textNode1);
+
+        let td3 = tr.insertCell(3);
         td3.appendChild(editButton);
 
-        let td4 = tr.insertCell(3);
+        let td4 = tr.insertCell(4);
         td4.appendChild(deleteButton);
     });
 
-    Tasks = data;
+    Users = data;
 }
+
+
+getItems(token);
