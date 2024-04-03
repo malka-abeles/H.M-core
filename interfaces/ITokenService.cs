@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 
-namespace myTasks.Services
+// namespace myTasks.Services
+namespace myTasks.Interfaces
 {
     public interface ITaskTokenService
     {

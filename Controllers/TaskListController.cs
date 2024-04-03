@@ -4,14 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using TaskList.Interface;
-using Tasklist.Modelssss;
-using Task = Tasklist.Modelssss.Task;
+// using TaskList.Interface;
+using myTasks.Services;
+using myTasks.Interfaces;
+// using Tasklist.Modelssss;
+using myTasks.Models;
+using Task = myTasks.Models.Task;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
-namespace TaskList.Controllers
+// namespace TaskList.Controllers
+namespace myTasks.Controllers
 {
     [ApiController]
     [Route("[controller]")]

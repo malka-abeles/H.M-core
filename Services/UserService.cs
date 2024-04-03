@@ -8,7 +8,8 @@ using System.Linq;
 
 
 
-namespace myTasks.Services{
+namespace myTasks.Services
+{
 public class UserService: IUserService
 {
     private  List<User> users;
@@ -86,7 +87,7 @@ public class UserService: IUserService
     }  
     public int Count => users.Count();
 }
-    public static class TaskUtils
+    public static class UserUtils
     {
         public static void AddUser(this IServiceCollection services)
         {

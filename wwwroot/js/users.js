@@ -6,7 +6,7 @@ var myHeaders = new Headers();
 myHeaders.append("Authorization", "Bearer " + token);
 myHeaders.append("Content-Type", "application/json");
 
-const getItems = (token)=> {
+const getItems = ()=> {
 
     var requestOptions = {
         method: 'GET',
@@ -37,7 +37,7 @@ const addItem=() =>{
         })
         .then(response => response.json())
         .then(() => {
-            getItems(token);
+            getItems();
             addNameTextbox.value = '';
             addPasswordTextbox.value = '';
         })
@@ -49,7 +49,7 @@ function deleteItem(id) {
             method: 'DELETE',
             headers: myHeaders,
         })
-        .then(() => getItems(token))
+        .then(() => getItems())
         .catch(error => console.error('Unable to delete item.', error));
 }
 
@@ -62,26 +62,27 @@ function displayEditForm(id) {
     document.getElementById('editForm').style.display = 'block';
 }
 
-function updateItem() {
-    const itemId = document.getElementById('edit-id').value;
-    const item = {
-        id: parseInt(itemId, 10),
-        isDone: document.getElementById('edit-isManeger').checked,
-        name: document.getElementById('edit-name').value.trim()
-    };
+//This challenge(to update the detiles of the user) is not ready yet.
+// function updateItem() {
+//     const itemId = document.getElementById('edit-id').value;
+//     const item = {
+//         id: parseInt(itemId, 10),
+//         isDone: document.getElementById('edit-isManeger').checked,
+//         name: document.getElementById('edit-name').value.trim()
+//     };
 
-    fetch(`${uri}/${itemId}`, {
-            method: 'PUT',
-            headers: myHeaders,
-            body: JSON.stringify(item)
-        })
-        .then(() => getItems(token))
-        .catch(error => console.error('Unable to update item.', error));
+//     fetch(`${uri}/${itemId}`, {
+//             method: 'PUT',
+//             headers: myHeaders,
+//             body: JSON.stringify(item)
+//         })
+//         .then(() => getItems())
+//         .catch(error => console.error('Unable to update item.', error));
 
-    closeInput();
+//     closeInput();
 
-    return false;
-}
+//     return false;
+// }
 
 function closeInput() {
     document.getElementById('editForm').style.display = 'none';
@@ -124,19 +125,20 @@ function _displayItems(data) {
         let textNode = document.createTextNode(item.name);
         td2.appendChild(textNode);
 
-        let td5 = tr.insertCell(2);
+        let td3 = tr.insertCell(2);
         let textNode1 = document.createTextNode(item.password);
-        td5.appendChild(textNode1);
+        td3.appendChild(textNode1);
 
-        let td3 = tr.insertCell(3);
-        td3.appendChild(editButton);
+        //This challenge(to update the detiles of the user) is not ready yet.
+        // let td4 = tr.insertCell(3);
+        // td4.appendChild(editButton);
 
-        let td4 = tr.insertCell(4);
-        td4.appendChild(deleteButton);
+        let td5 = tr.insertCell(3);
+        td5.appendChild(deleteButton);
     });
 
     Users = data;
 }
 
 
-getItems(token);
+getItems();

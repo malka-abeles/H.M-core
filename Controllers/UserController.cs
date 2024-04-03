@@ -7,12 +7,13 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using TaskList.Interface;
+// using TaskList.Interface;
 using System;
 
 
 
-namespace mytasks.Controllers
+// namespace mytasks.Controllers
+namespace myTasks.Controllers
 {
     [ApiController]
     [Route("[controller]")]

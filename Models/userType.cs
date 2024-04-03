@@ -1,6 +1,7 @@
-namespace myTasks.Models{
-public enum UserType
+namespace myTasks.Models
 {
-    ADMIN,USER
-}  
+ public enum UserType
+ {
+     ADMIN,USER
+ }  
 }

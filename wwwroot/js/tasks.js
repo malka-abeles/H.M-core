@@ -10,13 +10,12 @@ const ifAdmin = () => {
     if (userType[1]==="admin"){
         linkToUsers.style.display = 'block';
     }
-    alert(userType);
 }
 
 const ifTokenExpired = () => {
 if (token) {
-    const tokenData = parseJwt(token);
-    const expirationTime = tokenData.exp * 1000; 
+    // const tokenData = parseJwt(token);
+    const expirationTime = token.exp * 1000; 
     
     if (Date.now() > expirationTime) 
         window.location.href = '/login.html'; 
@@ -27,7 +26,7 @@ var myHeaders = new Headers();
 myHeaders.append("Authorization", "Bearer " + token);
 myHeaders.append("Content-Type", "application/json");
 
-const getItems = (token) => {
+const getItems = () => {
 
     ifAdmin();
     ifTokenExpired();
@@ -59,7 +58,7 @@ const addItem = () => {
     })
         .then(response => response.json())
         .then(() => {
-            getItems(token);
+            getItems();
             addNameTextbox.value = '';
         })
         .catch(error => console.error('Unable to add item.', error));
@@ -70,7 +69,7 @@ function deleteItem(id) {
         method: 'DELETE',
         headers: myHeaders,
     })
-        .then(() => getItems(token))
+        .then(() => getItems())
         .catch(error => console.error('Unable to delete item.', error));
 }
 
@@ -78,9 +77,9 @@ function displayEditForm(id) {
     const item = Tasks.find(item => item.id === id);
 
     document.getElementById('edit-name').value = item.name;
-    document.getElementById('edit-password').value = item.name;
+    // document.getElementById('edit-password').value = item.name;
     document.getElementById('edit-id').value = item.id;
-    document.getElementById('edit-isManeger').checked = item.isManeger;
+    // document.getElementById('edit-isManeger').checked = item.isManeger;
     document.getElementById('editForm').style.display = 'block';
 }
 
@@ -88,9 +87,9 @@ function updateItem() {
     const itemId = document.getElementById('edit-id').value;
     const item = {
         id: parseInt(itemId, 10),
-        isDone: document.getElementById('edit-isManeger').checked,
+        isDone: document.getElementById('edit-isDone').checked,
         name: document.getElementById('edit-name').value.trim(),
-        password: document.getElementById('edit-password').value.trim()
+        // password: document.getElementById('edit-password').value.trim()
     };
 
     fetch(`${uri}/${itemId}`, {
@@ -98,7 +97,7 @@ function updateItem() {
         headers: myHeaders,
         body: JSON.stringify(item)
     })
-        .then(() => getItems(token))
+        .then(() => getItems())
         .catch(error => console.error('Unable to update item.', error));
 
     closeInput();
@@ -158,4 +157,4 @@ function _displayItems(data) {
 }
 
 
-getItems(token);
+getItems();

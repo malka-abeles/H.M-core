@@ -1,8 +1,10 @@
-using Tasklist.Modelssss;
+// using Tasklist.Modelssss;
+using myTasks.Models;
 using System.Collections.Generic;
 
 
-namespace  TaskList.Interface
+// namespace  TaskList.Interface
+namespace  myTasks.Interfaces
 {
     public interface ITaskListService
     {

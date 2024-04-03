@@ -8,9 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using TaskList.Services;
-using Middleware;
 using myTasks.Services;
+using Middleware;
 
 
 namespace H.M

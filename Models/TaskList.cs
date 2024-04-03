@@ -1,6 +1,7 @@
 using System;
 
-namespace Tasklist.Modelssss
+// namespace Tasklist.Modelssss
+namespace myTasks.Models
 {
     public class Task
     {
